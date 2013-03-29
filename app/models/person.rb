@@ -5,6 +5,10 @@ class Person < ActiveRecord::Base
 
   attr_accessible :email, :name, :auth_token
 
+  has_many :memberships
+  has_many :conversations, through: :memberships
+  has_many :messages
+
   def self.create_for_email email
     Person.create email: email,
       auth_token: uuid
