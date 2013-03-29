@@ -40,12 +40,45 @@ class ApplicationController < ActionController::Base
     @current_person
   end
 
+  def with_message id
+    message = Message.find_by_uuid id
+    if message
+      yield message
+    else
+      render json: {error: 'unknown message'}, status: 404
+    end
+  end
+
+  def messages_to_hal messages
+    messages.map {|message| message_to_hal message }
+  end
+
+  def message_to_hal message
+    message.to_hal.tap do |hash|
+      hash[:_links] = {
+        self: { href: message_url(id: message.uuid) }
+      }
+    end
+  end
+
   def with_conversation id
     conversation = Conversation.find_by_uuid id
     if conversation
       yield conversation
     else
       render json: {error: 'unknown conversation'}, status: 404
+    end
+  end
+
+  def conversations_to_hal conversations
+    conversations.map {|conversation| conversation_to_hal conversation }
+  end
+
+  def conversation_to_hal conversation
+    conversation.to_hal.tap do |hash|
+      hash[:_links] = {
+        self: { href: conversation_url(id: conversation.uuid) }
+      }
     end
   end
 end
