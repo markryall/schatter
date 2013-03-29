@@ -5,9 +5,9 @@ describe ConversationsController do
   let(:conversation) { stub 'conversation', uuid: 'id', to_hal: {uuid: 'id'} }
 
   before do
-    person.stub(:create_conversation).and_return conversation
     controller.stub(:current_person).and_return person
     Conversation.stub(:find_by_uuid).with('id').and_return conversation
+    person.stub(:create_conversation).and_return conversation
   end
 
   it 'should return empty conversation list if the current person has none' do
@@ -24,7 +24,8 @@ describe ConversationsController do
       conversations: [{
         uuid: 'id',
         _links: {
-          self: { href: 'http://test.host/conversations/id' }
+          self: { href: 'http://test.host/conversations/id' },
+          messages: { href: 'http://test.host/conversations/id/messages' }
         }
       }]
     }.to_json
@@ -35,7 +36,8 @@ describe ConversationsController do
     response.body.should == {
       uuid: 'id',
       _links: {
-        self: { href: 'http://test.host/conversations/id' }
+        self: { href: 'http://test.host/conversations/id' },
+        messages: { href: 'http://test.host/conversations/id/messages' }
       }
     }.to_json
   end
@@ -45,7 +47,8 @@ describe ConversationsController do
     response.body.should == {
       uuid: 'id',
       _links: {
-        self: { href: 'http://test.host/conversations/id' }
+        self: { href: 'http://test.host/conversations/id' },
+        messages: { href: 'http://test.host/conversations/id/messages' }
       }
     }.to_json
   end

@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    with_conversation do |conversation|
+    with_conversation params[:conversation_id] do |conversation|
       render json: { messages: messages_to_hal(conversation.messages) }
     end
   end
