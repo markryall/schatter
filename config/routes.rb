@@ -1,11 +1,7 @@
 Schatter::Application.routes.draw do
-  get 'conversations' => 'conversations#index', as: 'conversations'
-  post 'conversations' => 'conversations#create'
-
-  get 'conversations/:conversation_id/messages' => 'messages#index', as: 'messages'
-  post 'conversations/:conversation_id/messages' => 'messages#create'
-
-  delete 'messages/:message_id' => 'messages#destroy'
+  resources :conversations do
+    resources :messages
+  end
 
   post 'persona/verify' => 'persona#verify'
   get  'home' => 'home#index', as: 'home'

@@ -22,6 +22,10 @@ Creating a conversation:
 
     {"uuid":"c639211d-7a20-419e-8ff0-129e77ef1f49","timestamp":1364544668}
 
+Getting a conversation:
+
+  curl -H 'Content-Type: application/json' -H "Accept: application/json" -X GET 'http://localhost:3000/conversations/8d4dc8d8-7f05-4c92-97f7-baf86e2d156e?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+
 Adding a message to a conversation:
 
     curl -H 'Content-Type: application/json' -H "Accept: application/json" -X POST -d '{"content": "hello world"}' 'http://localhost:3000/conversations/c639211d-7a20-419e-8ff0-129e77ef1f49/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629'

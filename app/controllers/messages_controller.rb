@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   def index
     with_conversation do |conversation|
-      render json: {messages: conversation.messages.map(&:to_hal)}
+      render json: { messages: conversation.messages.map(&:to_hal) }
     end
   end
 
@@ -19,15 +19,6 @@ class MessagesController < ApplicationController
       render json: message.to_hal
     else
       render json: {error: 'unknown message'}, status: 404
-    end
-  end
-private
-  def with_conversation
-    conversation = Conversation.find_by_uuid params[:conversation_id]
-    if conversation
-      yield conversation
-    else
-      render json: {error: 'unknown conversation'}, status: 404
     end
   end
 end

@@ -39,4 +39,13 @@ class ApplicationController < ActionController::Base
     @current_person = Person.create_for_email session[:email] unless @current_person
     @current_person
   end
+
+  def with_conversation id
+    conversation = Conversation.find_by_uuid id
+    if conversation
+      yield conversation
+    else
+      render json: {error: 'unknown conversation'}, status: 404
+    end
+  end
 end
