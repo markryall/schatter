@@ -5,6 +5,6 @@ class ConversationsController < ApplicationController
 
   def create
     conversation = current_person.create_conversation
-    render json: conversation.to_hal
+    render json: conversation.to_hal, status: 201
   end
 end
