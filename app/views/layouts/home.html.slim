@@ -7,6 +7,13 @@ html
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
   body
+    div.navbar.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          a.brand href="/" home
+          ul.nav.pull-right
+            li
+              = link_to "logout #{current_person.email}", logout_url
     div.container
       = yield
     = javascript_include_tag 'application'

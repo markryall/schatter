@@ -8,4 +8,9 @@ class RootController < ApplicationController
       redirect_to redirect_url
     end
   end
+
+  def logout
+    session[:email] = nil
+    redirect_to root_url
+  end
 end
