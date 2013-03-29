@@ -1,6 +1,6 @@
 class ConversationsController < ApplicationController
   def index
-    render json: {}
+    render json: {conversations: current_person.conversations.map(&:to_hal)}
   end
 
   def create
