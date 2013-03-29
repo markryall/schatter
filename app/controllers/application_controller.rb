@@ -6,8 +6,15 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless logged_in?
-      session[:initial_url] = request.url
-      redirect_to root_url
+      respond_to do |format|
+        format.html do
+          session[:initial_url] = request.url
+          redirect_to root_url
+        end
+        format.json do
+          render json: {error: 'unauthorized'}, status: 401
+        end
+      end
     end
   end
 
