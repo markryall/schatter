@@ -121,6 +121,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.2)
 
 PLATFORMS
   ruby
@@ -135,3 +136,4 @@ DEPENDENCIES
   slim
   uglifier (>= 1.0.3)
   unicorn
+  uuidtools

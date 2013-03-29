@@ -5,6 +5,7 @@ gem 'pg'
 gem 'slim'
 gem 'jquery-rails'
 gem 'unicorn'
+gem 'uuidtools'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

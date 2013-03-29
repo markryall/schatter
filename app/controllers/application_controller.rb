@@ -17,7 +17,16 @@ class ApplicationController < ActionController::Base
 
   def current_person
     return @current_person if @current_person
-    return unless session[:email]
+
+    if params[:auth_token]
+      @current_person = Person.find_by_auth_token params[:auth_token]
+      if @current_person
+        session[:email] = @current_person.email
+        return @current_person
+      end
+    end
+
+    return nil unless session[:email]
 
     @current_person = Person.find_by_email session[:email]
     @current_person = Person.create_for_email session[:email] unless @current_person
