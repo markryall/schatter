@@ -10,6 +10,7 @@ class Message < ActiveRecord::Base
   def to_hal
     {
       uuid: uuid,
+      content: content,
       timestamp: created_at.to_i
     }
   end
