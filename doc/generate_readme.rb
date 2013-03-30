@@ -1,9 +1,9 @@
 TEMPLATE = <<EOF
-== schatter
+# schatter
 
 A simple persisted chat service.  See the schatter gem for wrapping calls to this service.
 
-== Getting started
+## Getting started
 
 Deploy the application somewhere (heroku for instance).
 
@@ -11,7 +11,7 @@ Log in with a persona account.
 
 Use the generated auth_token for everything else.
 
-== Deployment
+## Deployment
 
 You can try this out on heroku (after installing the heroku toolbelt):
 
@@ -21,7 +21,7 @@ You can try this out on heroku (after installing the heroku toolbelt):
     git push heroku master
     heroku run rake db:migrate
 
-= API
+## API
 
 My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next should be returned.
 
@@ -59,7 +59,7 @@ Destroying a message:
 
     curl -H 'Content-Type: application/json' -H "Accept: application/json" -X DELETE 'http://localhost:3000/messages/d2fe2f02-9518-4d14-8723-b1ec5c057d30?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
 
-== Future plans
+## Future plans
 
 * actually being able to communicate via the web interface
 * switching between sequential and threaded conversation views
