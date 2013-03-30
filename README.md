@@ -24,7 +24,7 @@ You can try this out on heroku (after installing the heroku toolbelt):
 
 My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next should be returned.
 
-    curl -H 'Accept: application/json' http://localhost:3000
+    curl -s -H 'Accept: application/json' http://localhost:3000
 
 This will give you the resource urls for retrieving collections of conversations:
 

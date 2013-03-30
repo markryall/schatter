@@ -70,7 +70,7 @@ def base_url
 end
 
 def curl_get url
-  "curl -H 'Accept: application/json' #{url}"
+  "curl -s -H 'Accept: application/json' #{url}"
 end
 
 def execute command
