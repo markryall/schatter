@@ -27,23 +27,27 @@ My inadequate understanding of REST suggests that guessing urls from known templ
 
 Instead you hit a resource url and follow hypermedia links to determine what can be done next.
 
-    <%= session.urls %>
+    <%= session.get_urls %>
 
 This will return a list of resource urls:
 
-    <%= execute session.urls %>
+    <%= execute session.get_urls %>
 
 Retrieve list of conversations by replacing the AUTH_TOKEN with the auth token generated when you sign in with a persona id.
 
-  <%= session.conversations_url %>
+    <%= session.get_conversations_url %>
 
-Creating a conversation:
+Initially this will return an empty list of conversations (because you haven't created any):
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X POST -d '{"name": "first conversation"}' 'http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    <%= execute session.get_conversations_url %>
 
-This will return the resource urls for messages and people (conversation participants):
+You can create a new conversation with a POST to the conversation resource url:
 
-    {"uuid":"da14e2ae-8cbf-46b6-84c0-437c4a393389","name":"first conversation","timestamp":1364625518,"_links":{"self":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389"},"messages":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389/messages"},"people":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389/people"}}}
+    <%= session.post_conversations_url name: 'first conversation' %>
+
+This will return the conversation resource including urls for messages and people (conversation participants):
+
+    <%= execute session.post_conversations_url name: 'first conversation' %>
 
 Getting a conversation:
 
@@ -81,7 +85,11 @@ end
 
 class Curl
   def get url
-    "curl -s -H 'Accept: application/json' #{url}"
+    "curl -s -H 'Accept: application/json' -X GET #{url}"
+  end
+
+  def post url, data
+    "curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '#{data.to_json}' #{url}"
   end
 end
 
@@ -92,25 +100,27 @@ class Session
     @curl, @auth_token = curl, auth_token
   end
 
-  def urls
+  def get_urls
     curl.get base_url
   end
 
-  def conversations
-    curl.get conversations_url
+  def get_conversations_url
+    curl.get url(:conversations)
   end
 
-  def conversations_url
-    curl.get get_url :conversations
+  def post_conversations_url data
+    curl.post url(:conversations), data
   end
 
-  def get_url name
-    get_urls[name.to_s]['href'].gsub('AUTH_TOKEN', auth_token)
+private
+
+  def url name
+    urls[name.to_s]['href'].gsub('AUTH_TOKEN', auth_token)
   end
 
-  def get_urls
+  def urls
     return @urls if @urls
-    @urls = JSON.parse(execute urls)['_links']
+    @urls = JSON.parse(execute get_urls)['_links']
   end
 
   def base_url
@@ -120,9 +130,7 @@ end
 
 require 'erb'
 
-curl = Curl.new
-session = Session.new curl, ENV['SCHATTER_AUTH_TOKEN']
-
+session = Session.new Curl.new, ENV['SCHATTER_AUTH_TOKEN']
 template = ERB.new TEMPLATE, 0, "%<>"
 
 puts template.result binding

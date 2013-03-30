@@ -26,23 +26,27 @@ My inadequate understanding of REST suggests that guessing urls from known templ
 
 Instead you hit a resource url and follow hypermedia links to determine what can be done next.
 
-    curl -s -H 'Accept: application/json' http://localhost:3000
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000
 
 This will return a list of resource urls:
 
     {"_links":{"self":{"href":"http://localhost:3000/"},"conversations":{"href":"http://localhost:3000/conversations?auth_token=AUTH_TOKEN"}}}
 
-Retrieve list of conversations
+Retrieve list of conversations by replacing the AUTH_TOKEN with the auth token generated when you sign in with a persona id.
 
-  curl -s -H 'Accept: application/json' http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-Creating a conversation:
+Initially this will return an empty list of conversations (because you haven't created any):
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X POST -d '{"name": "first conversation"}' 'http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    {"conversations":[]}
 
-This will return the resource urls for messages and people (conversation participants):
+You can create a new conversation with a POST to the conversation resource url:
 
-    {"uuid":"da14e2ae-8cbf-46b6-84c0-437c4a393389","name":"first conversation","timestamp":1364625518,"_links":{"self":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389"},"messages":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389/messages"},"people":{"href":"http://localhost:3000/conversations/da14e2ae-8cbf-46b6-84c0-437c4a393389/people"}}}
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"name":"first conversation"}' http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+
+This will return the conversation resource including urls for messages and people (conversation participants):
+
+    {"uuid":"c8bbdefd-1a2d-4fe3-839a-bd5e502a1288","name":"first conversation","timestamp":1364631655,"_links":{"self":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288"},"messages":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288/messages"},"people":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288/people"}}}
 
 Getting a conversation:
 
