@@ -10,6 +10,16 @@ Log in with a persona account.
 
 Use the generated auth_token for everything else.
 
+== Deployment
+
+You can try this out on heroku (after installing the heroku toolbelt):
+
+    heroku apps:create
+    heroku addons:add heroku-postgresql
+    heroku config:add RAILS_SECRET=`rake secret`
+    git push heroku master
+    heroku run rake db:migrate
+
 = API
 
 My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next.
