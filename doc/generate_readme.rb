@@ -1,3 +1,4 @@
+TEMPLATE = <<EOF
 == schatter
 
 A simple persisted chat service.  See the schatter gem for wrapping calls to this service.
@@ -24,11 +25,11 @@ You can try this out on heroku (after installing the heroku toolbelt):
 
 My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next should be returned.
 
-    curl -H "Accept: application/json" http://localhost:3000
+    <%= curl_get base_url %>
 
 This will give you the resource urls for retrieving collections of conversations:
 
-    {"_links":{"self":{"href":"http://localhost:3000/"},"conversations":{"href":"http://localhost:3000/conversations?auth_token=AUTH_TOKEN"}}}
+    <%= execute curl_get base_url %>
 
 Creating a conversation:
 
@@ -62,3 +63,24 @@ Destroying a message:
 
 * actually being able to communicate via the web interface
 * switching between sequential and threaded conversation views
+EOF
+
+def base_url
+  'http://localhost:3000'
+end
+
+def curl_get url
+  "curl -H 'Accept: application/json' #{url}"
+end
+
+def execute command
+  out = `#{command}`
+  raise "#{command.inspect} failed with exit status #{$?.exitstatus}" unless $?.success?
+  out
+end
+
+require 'erb'
+
+template = ERB.new TEMPLATE, 0, "%<>"
+
+puts template.result binding

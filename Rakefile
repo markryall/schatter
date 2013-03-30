@@ -5,3 +5,7 @@
 require File.expand_path('../config/application', __FILE__)
 
 Schatter::Application.load_tasks
+
+task :readme do
+  `ruby doc/generate_readme.rb > README.md`
+end
