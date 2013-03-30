@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
 
   def with_conversation id
     conversation = Conversation.find_by_uuid id
-    if conversation
+    if conversation && conversation.people.include?(current_person)
       yield conversation
     else
       render json: {error: 'unknown conversation'}, status: 404

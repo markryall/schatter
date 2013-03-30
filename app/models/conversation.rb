@@ -6,7 +6,7 @@ class Conversation < ActiveRecord::Base
   attr_accessible :uuid
 
   has_many :memberships
-  has_many :conversations, through: :memberships
+  has_many :people, through: :memberships
   has_many :messages
 
   def to_hal
