@@ -22,13 +22,19 @@ You can try this out on heroku (after installing the heroku toolbelt):
 
 ## API
 
-My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next should be returned.
+My inadequate understanding of REST suggests that guessing urls from known templates is bad.
+
+Instead you hit a resource url and follow hypermedia links to determine what can be done next.
 
     curl -s -H 'Accept: application/json' http://localhost:3000
 
-This will give you the resource urls for retrieving collections of conversations:
+This will return a list of resource urls:
 
     {"_links":{"self":{"href":"http://localhost:3000/"},"conversations":{"href":"http://localhost:3000/conversations?auth_token=AUTH_TOKEN"}}}
+
+Retrieve list of conversations
+
+  curl -s -H 'Accept: application/json' http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
 Creating a conversation:
 

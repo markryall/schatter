@@ -23,13 +23,19 @@ You can try this out on heroku (after installing the heroku toolbelt):
 
 ## API
 
-My lame understand of REST suggests that building urls from known templates is bad.  Instead you hit a resource url and the hypermedia links to determine what can be done next should be returned.
+My inadequate understanding of REST suggests that guessing urls from known templates is bad.
 
-    <%= curl_get base_url %>
+Instead you hit a resource url and follow hypermedia links to determine what can be done next.
 
-This will give you the resource urls for retrieving collections of conversations:
+    <%= session.urls %>
 
-    <%= execute curl_get base_url %>
+This will return a list of resource urls:
+
+    <%= execute session.urls %>
+
+Retrieve list of conversations by replacing the AUTH_TOKEN with the auth token generated when you sign in with a persona id.
+
+  <%= session.conversations_url %>
 
 Creating a conversation:
 
@@ -65,13 +71,7 @@ Destroying a message:
 * switching between sequential and threaded conversation views
 EOF
 
-def base_url
-  'http://localhost:3000'
-end
-
-def curl_get url
-  "curl -s -H 'Accept: application/json' #{url}"
-end
+require 'json'
 
 def execute command
   out = `#{command}`
@@ -79,7 +79,49 @@ def execute command
   out
 end
 
+class Curl
+  def get url
+    "curl -s -H 'Accept: application/json' #{url}"
+  end
+end
+
+class Session
+  attr_reader :curl, :auth_token
+
+  def initialize curl, auth_token
+    @curl, @auth_token = curl, auth_token
+  end
+
+  def urls
+    curl.get base_url
+  end
+
+  def conversations
+    curl.get conversations_url
+  end
+
+  def conversations_url
+    curl.get get_url :conversations
+  end
+
+  def get_url name
+    get_urls[name.to_s]['href'].gsub('AUTH_TOKEN', auth_token)
+  end
+
+  def get_urls
+    return @urls if @urls
+    @urls = JSON.parse(execute urls)['_links']
+  end
+
+  def base_url
+    'http://localhost:3000'
+  end
+end
+
 require 'erb'
+
+curl = Curl.new
+session = Session.new curl, ENV['SCHATTER_AUTH_TOKEN']
 
 template = ERB.new TEMPLATE, 0, "%<>"
 

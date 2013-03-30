@@ -6,6 +6,11 @@ require File.expand_path('../config/application', __FILE__)
 
 Schatter::Application.load_tasks
 
-task :readme do
+task clear: :environment do
+  Conversation.delete_all
+  Message.delete_all
+end
+
+task readme: :clear do
   `ruby doc/generate_readme.rb > README.md`
 end
