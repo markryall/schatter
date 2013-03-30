@@ -11,7 +11,8 @@ describe MessagesController do
     stub 'conversation',
       uuid: 'conversation_id',
       to_hal: {uuid: 'conversation_id'},
-      messages: [message]
+      messages: [message],
+      people: [person]
   end
 
   before do

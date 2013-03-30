@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
   end
 
   def create
-    with_conversation do |conversation|
+    with_conversation params[:conversation_id] do |conversation|
       message = current_person.create_message conversation, params[:content]
       render json: message.to_hal, status: 201
     end

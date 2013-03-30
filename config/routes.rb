@@ -1,9 +1,11 @@
 Schatter::Application.routes.draw do
   resources :conversations do
     resources :messages
+    resources :people
   end
 
   resources :messages
+  resources :people
 
   post 'persona/verify' => 'persona#verify'
   get  'home' => 'home#index', as: 'home'

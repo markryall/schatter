@@ -6,7 +6,7 @@ describe RootController do
     response.body.should == {
       _links: {
         self: { href: 'http://test.host/' },
-        conversations: { href: 'http://test.host/conversations' }
+        conversations: { href: 'http://test.host/conversations?auth_token=AUTH_TOKEN' }
       }
     }.to_json
   end
