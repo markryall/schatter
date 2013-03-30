@@ -46,7 +46,7 @@ You can create a new conversation with a POST to the conversation resource url:
 
 This will return the conversation resource including urls for messages and people (conversation participants):
 
-    {"uuid":"c8bbdefd-1a2d-4fe3-839a-bd5e502a1288","name":"first conversation","timestamp":1364631655,"_links":{"self":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288"},"messages":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288/messages"},"people":{"href":"http://localhost:3000/conversations/c8bbdefd-1a2d-4fe3-839a-bd5e502a1288/people"}}}
+    {"uuid":"c90f6307-8c72-4e2e-9b86-31041b845e8b","name":"first conversation","timestamp":1364643646,"_links":{"self":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b"},"messages":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b/messages"},"people":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b/people"}}}
 
 Getting a conversation:
 
