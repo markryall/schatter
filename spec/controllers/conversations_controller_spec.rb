@@ -24,7 +24,8 @@ describe ConversationsController do
         uuid: 'id',
         _links: {
           self: { href: 'http://test.host/conversations/id' },
-          messages: { href: 'http://test.host/conversations/id/messages' }
+          messages: { href: 'http://test.host/conversations/id/messages' },
+          people: { href: 'http://test.host/conversations/id/people' }
         }
       }]
     }.to_json
@@ -38,7 +39,8 @@ describe ConversationsController do
       uuid: 'id',
       _links: {
         self: { href: 'http://test.host/conversations/id' },
-        messages: { href: 'http://test.host/conversations/id/messages' }
+        messages: { href: 'http://test.host/conversations/id/messages' },
+        people: { href: 'http://test.host/conversations/id/people' }
       }
     }.to_json
   end
@@ -50,7 +52,8 @@ describe ConversationsController do
       uuid: 'id',
       _links: {
         self: { href: 'http://test.host/conversations/id' },
-        messages: { href: 'http://test.host/conversations/id/messages' }
+        messages: { href: 'http://test.host/conversations/id/messages' },
+        people: { href: 'http://test.host/conversations/id/people' }
       }
     }.to_json
   end

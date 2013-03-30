@@ -3,7 +3,7 @@ require 'uuid_generator'
 class Conversation < ActiveRecord::Base
   extend UuidGenerator
 
-  attr_accessible :uuid
+  attr_accessible :uuid, :name
 
   has_many :memberships
   has_many :people, through: :memberships
@@ -12,6 +12,7 @@ class Conversation < ActiveRecord::Base
   def to_hal
     {
       uuid: uuid,
+      name: name,
       timestamp: created_at.to_i
     }
   end

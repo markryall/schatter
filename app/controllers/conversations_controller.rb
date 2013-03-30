@@ -10,7 +10,7 @@ class ConversationsController < ApplicationController
   end
 
   def create
-    conversation = current_person.create_conversation
+    conversation = current_person.create_conversation params[:name]
     render json: conversation_to_hal(conversation), status: 201
   end
 end
