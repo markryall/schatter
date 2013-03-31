@@ -7,11 +7,15 @@ class Message < ActiveRecord::Base
   belongs_to :person
   belongs_to :message
 
-  def to_hal
+  def to_hal urls
     {
       uuid: uuid,
       content: content,
-      timestamp: created_at.to_i
+      timestamp: created_at.to_i,
+      person: person.to_hal(urls),
+      _links: {
+        self: { href: urls.message_url(id: uuid, auth_token: 'AUTH_TOKEN') }
+      }
     }
   end
 end

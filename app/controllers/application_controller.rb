@@ -49,47 +49,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def messages_to_hal messages
-    messages.map {|message| message_to_hal message }
-  end
-
-  def message_to_hal message
-    message.to_hal.tap do |hash|
-      hash[:person] = person_to_hal(message.person)
-      hash[:_links] = {
-        self: { href: message_url(id: message.uuid) }
-      }
-    end
-  end
-
-  def person_to_hal person
-    person.to_hal.tap do |hash|
-      hash[:_links] = {
-        self: { href: person_url(id: person.uuid) }
-      }
-    end
-  end
-
   def with_conversation id
     conversation = Conversation.find_by_uuid id
     if conversation && conversation.people.include?(current_person)
       yield conversation
     else
       render json: {error: 'unknown conversation'}, status: 404
-    end
-  end
-
-  def conversations_to_hal conversations
-    conversations.map {|conversation| conversation_to_hal conversation }
-  end
-
-  def conversation_to_hal conversation
-    conversation.to_hal.tap do |hash|
-      hash[:_links] = {
-        self: { href: conversation_url(id: conversation.uuid) },
-        messages: { href: conversation_messages_url(conversation_id: conversation.uuid, auth_token: 'AUTH_TOKEN') },
-        people: { href: conversation_people_url(conversation_id: conversation.uuid, auth_token: 'AUTH_TOKEN') }
-      }
     end
   end
 end

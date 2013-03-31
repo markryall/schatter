@@ -29,11 +29,14 @@ class Person < ActiveRecord::Base
     Message.create person: self, conversation: conversation, uuid: uuid, content: content
   end
 
-  def to_hal
+  def to_hal urls
     {
       uuid: uuid,
       email: email,
-      timestamp: created_at.to_i
+      timestamp: created_at.to_i,
+      _links: {
+        self: { href: urls.person_url(id: uuid, auth_token: 'AUTH_TOKEN') }
+      }
     }
   end
 end

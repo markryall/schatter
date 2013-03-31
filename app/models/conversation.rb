@@ -9,11 +9,16 @@ class Conversation < ActiveRecord::Base
   has_many :people, through: :memberships
   has_many :messages
 
-  def to_hal
+  def to_hal urls
     {
       uuid: uuid,
       name: name,
-      timestamp: created_at.to_i
+      timestamp: created_at.to_i,
+      _links: {
+        self: { href: urls.conversation_url(id: uuid, auth_token: 'AUTH_TOKEN') },
+        messages: { href: urls.conversation_messages_url(conversation_id: uuid, auth_token: 'AUTH_TOKEN') },
+        people: { href: urls.conversation_people_url(conversation_id: uuid, auth_token: 'AUTH_TOKEN') }
+      }
     }
   end
 end
