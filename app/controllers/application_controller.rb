@@ -78,8 +78,8 @@ class ApplicationController < ActionController::Base
     conversation.to_hal.tap do |hash|
       hash[:_links] = {
         self: { href: conversation_url(id: conversation.uuid) },
-        messages: { href: conversation_messages_url(conversation_id: conversation.uuid) },
-        people: { href: conversation_people_url(conversation_id: conversation.uuid) }
+        messages: { href: conversation_messages_url(conversation_id: conversation.uuid, auth_token: 'AUTH_TOKEN') },
+        people: { href: conversation_people_url(conversation_id: conversation.uuid, auth_token: 'AUTH_TOKEN') }
       }
     end
   end
