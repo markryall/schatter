@@ -55,8 +55,17 @@ class ApplicationController < ActionController::Base
 
   def message_to_hal message
     message.to_hal.tap do |hash|
+      hash[:person] = person_to_hal(message.person)
       hash[:_links] = {
         self: { href: message_url(id: message.uuid) }
+      }
+    end
+  end
+
+  def person_to_hal person
+    person.to_hal.tap do |hash|
+      hash[:_links] = {
+        self: { href: person_url(id: person.uuid) }
       }
     end
   end
