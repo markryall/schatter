@@ -89,6 +89,24 @@ Messages can be deleted (only by the initial creator of the message)
 
     <%= deleted_message.result %>
 
+Initially the members of a conversation will only include the person who created it:
+
+    <%= initial_people.command %>
+
+    <%= initial_people.result %>
+
+New members can be created by posting to the conversation people url:
+
+    <%= new_person.command %>
+
+    <%= new_person.result %>
+
+This new person will now be included in the conversation list:
+
+    <%= people.command %>
+
+    <%= people.result %>
+
 ## Future plans
 
 * actually being able to communicate via the web interface
@@ -132,14 +150,20 @@ curl = Curl.new
 base_url = 'http://localhost:3000'
 
 urls = Request.new curl.get base_url
+
 empty_conversations = Request.new curl.get urls.link(:conversations)
 first_conversation = Request.new curl.post urls.link(:conversations), name: 'first conversation'
 conversations = Request.new curl.get urls.link(:conversations)
 retrieved_conversation = Request.new curl.get first_conversation.link(:self)
+
 empty_messages = Request.new curl.get first_conversation.link(:messages)
 first_message = Request.new curl.post first_conversation.link(:messages), content: 'first message'
 messages = Request.new curl.get first_conversation.link(:messages)
 deleted_message = Request.new curl.delete first_message.link(:self)
+
+initial_people = Request.new curl.get first_conversation.link(:people)
+new_person = Request.new curl.post first_conversation.link(:people), email: 'test2@email.com'
+people = Request.new curl.get first_conversation.link(:people)
 
 template = ERB.new TEMPLATE, 0, "%<>"
 
