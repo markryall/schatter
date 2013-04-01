@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
     return nil unless session[:email]
 
     @current_person = Person.find_by_email session[:email]
-    @current_person = Person.create_for_email session[:email] unless @current_person
+    @current_person = Person.find_or_create_for_email session[:email] unless @current_person
     @current_person
   end
 
