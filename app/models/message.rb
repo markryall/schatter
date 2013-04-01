@@ -12,7 +12,7 @@ class Message < ActiveRecord::Base
       uuid: uuid,
       content: content,
       timestamp: created_at.to_i,
-      person: person.to_hal(urls),
+      person_id: person.uuid,
       _links: {
         self: { href: urls.message_url(id: uuid) }
       }
