@@ -22,8 +22,8 @@ class MessagesController < ApplicationController
   end
 
   def destroy
-    message = Message.find_by_uuid params[:message_id]
-    if message
+    message = Message.find_by_uuid params[:id]
+    if message && message.person == current_person
       message.destroy
       render json: message.to_hal(self)
     else

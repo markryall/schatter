@@ -46,37 +46,47 @@ You can create a new conversation with a POST to the conversation resource url:
 
 This will return the conversation resource including urls for messages and people (conversation participants):
 
-    {"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}
+    {"uuid":"7581e0e5-9099-4705-a626-2495c26dcd6e","name":"first conversation","timestamp":1364776796,"_links":{"self":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/people?auth_token=AUTH_TOKEN"}}}
 
 This new conversation will now be included in the response to the conversation request.
 
     curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-    {"conversations":[{"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}]}
+    {"conversations":[{"uuid":"7581e0e5-9099-4705-a626-2495c26dcd6e","name":"first conversation","timestamp":1364776796,"_links":{"self":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/people?auth_token=AUTH_TOKEN"}}}]}
 
 You can retrieve the conversation using the resource url:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-    {"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}
+    {"uuid":"7581e0e5-9099-4705-a626-2495c26dcd6e","name":"first conversation","timestamp":1364776796,"_links":{"self":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/people?auth_token=AUTH_TOKEN"}}}
 
-Now that you have a conversation, you can add messages and people.
+Now that you have a conversation, you can retrieve messages and add messages and people.
+
+Retrieve the list of messages (which will initially be empty)
+
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+
+    {"messages":[]}
 
 To create a new message in a conversation:
 
-    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"first message"}' http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"first message"}' http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
 This will return the message resource.
 
-    {"uuid":"b2f0e7c9-653e-4da5-90a6-853c5f595762","content":"first message","timestamp":1364776203,"person":{"uuid":"3408705e-4a19-4187-82e0-1551a38cbceb","email":"test@email.com","timestamp":1364526089,"_links":{"self":{"href":"http://localhost:3000/people/6c20b750-56ee-4192-b158-56f3a5c356e9?auth_token=AUTH_TOKEN"}}},"_links":{"self":{"href":"http://localhost:3000/messages/b2f0e7c9-653e-4da5-90a6-853c5f595762?auth_token=AUTH_TOKEN"}}}
+    {"uuid":"00715a7e-4cf6-4110-b936-6c4d299177a1","content":"first message","timestamp":1364776796,"person":{"uuid":"e9fdee73-d7f9-434f-bdd4-4842b0c7d971","email":"test@email.com","timestamp":1364526089,"_links":{"self":{"href":"http://localhost:3000/people/4f40c1a8-8478-47a8-8019-b564477e4a31?auth_token=AUTH_TOKEN"}}},"_links":{"self":{"href":"http://localhost:3000/messages/00715a7e-4cf6-4110-b936-6c4d299177a1?auth_token=AUTH_TOKEN"}}}
 
-Getting conversation messages:
+Now retrieving conversation messages will include the new message:
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X GET 'http://localhost:3000/conversations/c639211d-7a20-419e-8ff0-129e77ef1f49/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/7581e0e5-9099-4705-a626-2495c26dcd6e/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-Destroying a message:
+    {"messages":[{"uuid":"00715a7e-4cf6-4110-b936-6c4d299177a1","content":"first message","timestamp":1364776796,"person":{"uuid":"8853eb83-28cf-4042-841e-c98bd118caa0","email":"test@email.com","timestamp":1364526089,"_links":{"self":{"href":"http://localhost:3000/people/ed2b1d40-6b0e-47b1-a206-64689b1db147?auth_token=AUTH_TOKEN"}}},"_links":{"self":{"href":"http://localhost:3000/messages/00715a7e-4cf6-4110-b936-6c4d299177a1?auth_token=AUTH_TOKEN"}}}]}
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X DELETE 'http://localhost:3000/messages/d2fe2f02-9518-4d14-8723-b1ec5c057d30?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+Messages can be deleted (only by the initial creator of the message)
+
+    curl -s -H 'Accept: application/json' -X DELETE http://localhost:3000/messages/00715a7e-4cf6-4110-b936-6c4d299177a1?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+
+    {"uuid":"00715a7e-4cf6-4110-b936-6c4d299177a1","content":"first message","timestamp":1364776796,"person":{"uuid":"5559eab0-8d15-4a20-a6ed-18ac5de963d5","email":"test@email.com","timestamp":1364526089,"_links":{"self":{"href":"http://localhost:3000/people/7e9e870c-3bfe-406f-989e-14d5d62af74b?auth_token=AUTH_TOKEN"}}},"_links":{"self":{"href":"http://localhost:3000/messages/00715a7e-4cf6-4110-b936-6c4d299177a1?auth_token=AUTH_TOKEN"}}}
 
 ## Future plans
 

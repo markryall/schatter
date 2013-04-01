@@ -61,7 +61,13 @@ You can retrieve the conversation using the resource url:
 
     <%= retrieved_conversation.result %>
 
-Now that you have a conversation, you can add messages and people.
+Now that you have a conversation, you can retrieve messages and add messages and people.
+
+Retrieve the list of messages (which will initially be empty)
+
+    <%= empty_messages.command %>
+
+    <%= empty_messages.result %>
 
 To create a new message in a conversation:
 
@@ -71,13 +77,17 @@ This will return the message resource.
 
     <%= first_message.result %>
 
-Getting conversation messages:
+Now retrieving conversation messages will include the new message:
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X GET 'http://localhost:3000/conversations/c639211d-7a20-419e-8ff0-129e77ef1f49/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    <%= messages.command %>
 
-Destroying a message:
+    <%= messages.result %>
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X DELETE 'http://localhost:3000/messages/d2fe2f02-9518-4d14-8723-b1ec5c057d30?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+Messages can be deleted (only by the initial creator of the message)
+
+    <%= deleted_message.command %>
+
+    <%= deleted_message.result %>
 
 ## Future plans
 
@@ -90,6 +100,10 @@ require 'json'
 class Curl
   def get url
     "curl -s -H 'Accept: application/json' -X GET #{url}"
+  end
+
+  def delete url
+    "curl -s -H 'Accept: application/json' -X DELETE #{url}"
   end
 
   def post url, data
@@ -122,7 +136,10 @@ empty_conversations = Request.new curl.get urls.link(:conversations)
 first_conversation = Request.new curl.post urls.link(:conversations), name: 'first conversation'
 conversations = Request.new curl.get urls.link(:conversations)
 retrieved_conversation = Request.new curl.get first_conversation.link(:self)
+empty_messages = Request.new curl.get first_conversation.link(:messages)
 first_message = Request.new curl.post first_conversation.link(:messages), content: 'first message'
+messages = Request.new curl.get first_conversation.link(:messages)
+deleted_message = Request.new curl.delete first_message.link(:self)
 
 template = ERB.new TEMPLATE, 0, "%<>"
 
