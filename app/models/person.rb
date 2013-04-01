@@ -35,7 +35,7 @@ class Person < ActiveRecord::Base
       email: email,
       timestamp: created_at.to_i,
       _links: {
-        self: { href: urls.person_url(id: uuid, auth_token: 'AUTH_TOKEN') }
+        self: { href: urls.person_url(id: uuid) }
       }
     }
   end

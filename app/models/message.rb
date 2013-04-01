@@ -14,7 +14,7 @@ class Message < ActiveRecord::Base
       timestamp: created_at.to_i,
       person: person.to_hal(urls),
       _links: {
-        self: { href: urls.message_url(id: uuid, auth_token: 'AUTH_TOKEN') }
+        self: { href: urls.message_url(id: uuid) }
       }
     }
   end

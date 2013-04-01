@@ -14,7 +14,7 @@ class RootController < ApplicationController
         render json: {
           _links: {
             self: { href: root_url },
-            conversations: { href: conversations_url(auth_token: 'AUTH_TOKEN') }
+            conversations: { href: conversations_url }
           }
         }
       end

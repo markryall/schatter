@@ -15,9 +15,9 @@ class Conversation < ActiveRecord::Base
       name: name,
       timestamp: created_at.to_i,
       _links: {
-        self: { href: urls.conversation_url(id: uuid, auth_token: 'AUTH_TOKEN') },
-        messages: { href: urls.conversation_messages_url(conversation_id: uuid, auth_token: 'AUTH_TOKEN') },
-        people: { href: urls.conversation_people_url(conversation_id: uuid, auth_token: 'AUTH_TOKEN') }
+        self: { href: urls.conversation_url(id: uuid) },
+        messages: { href: urls.conversation_messages_url(conversation_id: uuid) },
+        people: { href: urls.conversation_people_url(conversation_id: uuid) }
       }
     }
   end

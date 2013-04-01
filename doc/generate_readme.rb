@@ -114,17 +114,24 @@ This new person will now be included in the conversation list:
 EOF
 
 require 'json'
+require 'cgi'
 
 class Curl
-  def get url
-    "curl -s -H 'Accept: application/json' -X GET #{url}"
+  def non_post verb, url, params
+    params[:auth_token] = ENV['SCHATTER_AUTH_TOKEN']
+    "curl -s -H 'Accept: application/json' -X #{verb} #{url}?#{params.map{ |k,v| "#{k}=#{CGI.escape v.to_s}" }.join('&')}"
   end
 
-  def delete url
-    "curl -s -H 'Accept: application/json' -X DELETE #{url}"
+  def get url, params={}
+    non_post 'GET', url, params
+  end
+
+  def delete url, params={}
+    non_post 'DELETE', url, params
   end
 
   def post url, data
+    data[:auth_token] = ENV['SCHATTER_AUTH_TOKEN']
     "curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '#{data.to_json}' #{url}"
   end
 end
@@ -133,14 +140,14 @@ class Request
   attr_reader :command, :result
 
   def initialize command
-    @command = command
-    @result = `#{command}`
+    @command = command.tap {|c| $stderr.puts c }
+    @result = `#{command}`.tap {|c| $stderr.puts c }
     raise "#{command.inspect} failed with exit status #{$?.exitstatus}" unless $?.success?
     @parsed_result = JSON.parse @result
   end
 
   def link key
-    @parsed_result['_links'][key.to_s]['href'].gsub('AUTH_TOKEN', ENV['SCHATTER_AUTH_TOKEN'])
+    @parsed_result['_links'][key.to_s]['href']
   end
 end
 
