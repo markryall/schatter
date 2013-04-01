@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  attr_accessible :person, :conversation, :uuid, :content
+  attr_accessible :person, :conversation, :message, :uuid, :content
 
   belongs_to :conversation
   belongs_to :person
@@ -14,6 +14,8 @@ class Message < ActiveRecord::Base
       _links: {
         self: { href: urls.message_url(id: uuid) }
       }
-    }
+    }.tap do |hash|
+      hash[:parent_id] = message.uuid if message
+    end
   end
 end

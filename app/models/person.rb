@@ -25,8 +25,8 @@ class Person < ActiveRecord::Base
     conversation
   end
 
-  def create_message conversation, content
-    Message.create person: self, conversation: conversation, uuid: uuid, content: content
+  def create_message params
+    Message.create params.merge({person: self, uuid: new_uuid})
   end
 
   def to_hal urls

@@ -85,6 +85,14 @@ Now retrieving conversation messages will include the new message:
 
     <%= messages.result %>
 
+You can also reply to a message in a conversation:
+
+    <%= reply_message.command %>
+
+This will return the message resource.
+
+    <%= reply_message.result %>
+
 Messages can be deleted (only by the initial creator of the message)
 
     <%= deleted_message.command %>
@@ -148,6 +156,10 @@ class Request
     @parsed_result = JSON.parse @result
   end
 
+  def uuid
+    @parsed_result['uuid']
+  end
+
   def link key
     @parsed_result['_links'][key.to_s]['href']
   end
@@ -167,8 +179,9 @@ retrieved_conversation = Request.new curl.get first_conversation.link(:self)
 
 empty_messages = Request.new curl.get first_conversation.link(:messages)
 first_message = Request.new curl.post first_conversation.link(:messages), content: 'first message'
+reply_message = Request.new curl.post first_conversation.link(:messages), content: 'reply message', parent_id: first_conversation.uuid
 messages = Request.new curl.get first_conversation.link(:messages)
-deleted_message = Request.new curl.delete first_message.link(:self)
+deleted_message = Request.new curl.delete reply_message.link(:self)
 
 initial_people = Request.new curl.get first_conversation.link(:people)
 new_person = Request.new curl.post first_conversation.link(:people), email: 'test2@email.com'

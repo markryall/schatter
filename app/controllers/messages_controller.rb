@@ -16,7 +16,10 @@ class MessagesController < ApplicationController
 
   def create
     with_conversation params[:conversation_id] do |conversation|
-      message = current_person.create_message conversation, params[:content]
+      parent = Message.find_by_uuid params[:parent_id] if params[:parent_id]
+      message = current_person.create_message conversation: conversation,
+        content: params[:content],
+        message: parent
       render json: message.to_hal(self), status: 201
     end
   end
