@@ -17,7 +17,7 @@ class Person < ActiveRecord::Base
   end
 
   def create_conversation name
-    join_conversation Conversation.create uuid: uuid, name: name
+    join_conversation Conversation.create uuid: new_uuid, name: name
   end
 
   def join_conversation conversation
