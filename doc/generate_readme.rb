@@ -27,39 +27,49 @@ My inadequate understanding of REST suggests that guessing urls from known templ
 
 Instead you hit a resource url and follow hypermedia links to determine what can be done next.
 
-    <%= urls_command %>
+    <%= urls.command %>
 
 This will return a list of resource urls:
 
-    <%= urls_output %>
+    <%= urls.result %>
 
 Retrieve list of conversations by replacing the AUTH_TOKEN with the auth token generated when you sign in with a persona id.
 
-    <%= conversations_command %>
+    <%= empty_conversations.command %>
 
 Initially this will return an empty list of conversations (because you haven't created any):
 
-    <%= conversations_output %>
+    <%= empty_conversations.result %>
 
 You can create a new conversation with a POST to the conversation resource url:
 
-    <%= new_conversation_command %>
+    <%= first_conversation.command %>
 
 This will return the conversation resource including urls for messages and people (conversation participants):
 
-    <%= new_conversation_output %>
+    <%= first_conversation.result %>
 
-Getting a conversation:
+This new conversation will now be included in the response to the conversation request.
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X GET 'http://localhost:3000/conversations/8d4dc8d8-7f05-4c92-97f7-baf86e2d156e?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    <%= conversations.command %>
 
-Adding a message to a conversation:
+    <%= conversations.result %>
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X POST -d '{"content": "hello world"}' 'http://localhost:3000/conversations/c639211d-7a20-419e-8ff0-129e77ef1f49/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+You can retrieve the conversation using the resource url:
 
-This will return the message:
+    <%= retrieved_conversation.command %>
 
-    {"uuid":"8626f75f-49bb-468a-8b9a-b856859778af","content":"hello world","timestamp":1364548482}
+    <%= retrieved_conversation.result %>
+
+Now that you have a conversation, you can add messages and people.
+
+To create a new message in a conversation:
+
+    <%= first_message.command %>
+
+This will return the message resource.
+
+    <%= first_message.result %>
 
 Getting conversation messages:
 
@@ -77,12 +87,6 @@ EOF
 
 require 'json'
 
-def execute command
-  out = `#{command}`
-  raise "#{command.inspect} failed with exit status #{$?.exitstatus}" unless $?.success?
-  out
-end
-
 class Curl
   def get url
     "curl -s -H 'Accept: application/json' -X GET #{url}"
@@ -93,16 +97,18 @@ class Curl
   end
 end
 
-class Urls
-  attr_reader :urls, :auth_token
+class Request
+  attr_reader :command, :result
 
-  def initialize executed_urls, auth_token
-    @urls = JSON.parse(executed_urls)['_links']
-    @auth_token = auth_token
+  def initialize command
+    @command = command
+    @result = `#{command}`
+    raise "#{command.inspect} failed with exit status #{$?.exitstatus}" unless $?.success?
+    @parsed_result = JSON.parse @result
   end
 
-  def [] key
-    urls[key.to_s]['href'].gsub('AUTH_TOKEN', auth_token)
+  def link key
+    @parsed_result['_links'][key.to_s]['href'].gsub('AUTH_TOKEN', ENV['SCHATTER_AUTH_TOKEN'])
   end
 end
 
@@ -110,13 +116,13 @@ require 'erb'
 
 curl = Curl.new
 base_url = 'http://localhost:3000'
-urls_command = curl.get base_url
-urls_output = execute urls_command
-urls = Urls.new urls_output, ENV['SCHATTER_AUTH_TOKEN']
-conversations_command = curl.get urls[:conversations]
-conversations_output = execute conversations_command
-new_conversation_command = curl.post urls[:conversations], name: 'first conversation'
-new_conversation_output = execute new_conversation_command
+
+urls = Request.new curl.get base_url
+empty_conversations = Request.new curl.get urls.link(:conversations)
+first_conversation = Request.new curl.post urls.link(:conversations), name: 'first conversation'
+conversations = Request.new curl.get urls.link(:conversations)
+retrieved_conversation = Request.new curl.get first_conversation.link(:self)
+first_message = Request.new curl.post first_conversation.link(:messages), content: 'first message'
 
 template = ERB.new TEMPLATE, 0, "%<>"
 

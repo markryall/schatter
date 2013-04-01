@@ -46,19 +46,29 @@ You can create a new conversation with a POST to the conversation resource url:
 
 This will return the conversation resource including urls for messages and people (conversation participants):
 
-    {"uuid":"c90f6307-8c72-4e2e-9b86-31041b845e8b","name":"first conversation","timestamp":1364643646,"_links":{"self":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b"},"messages":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b/messages"},"people":{"href":"http://localhost:3000/conversations/c90f6307-8c72-4e2e-9b86-31041b845e8b/people"}}}
+    {"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}
 
-Getting a conversation:
+This new conversation will now be included in the response to the conversation request.
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X GET 'http://localhost:3000/conversations/8d4dc8d8-7f05-4c92-97f7-baf86e2d156e?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-Adding a message to a conversation:
+    {"conversations":[{"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}]}
 
-    curl -H 'Content-Type: application/json' -H "Accept: application/json" -X POST -d '{"content": "hello world"}' 'http://localhost:3000/conversations/c639211d-7a20-419e-8ff0-129e77ef1f49/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629'
+You can retrieve the conversation using the resource url:
 
-This will return the message:
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=96b97445-9694-4506-aa14-82ec76c50629
 
-    {"uuid":"8626f75f-49bb-468a-8b9a-b856859778af","content":"hello world","timestamp":1364548482}
+    {"uuid":"548ab90b-d141-4603-9e2c-7e1705423861","name":"first conversation","timestamp":1364776203,"_links":{"self":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861?auth_token=AUTH_TOKEN"},"messages":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=AUTH_TOKEN"},"people":{"href":"http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/people?auth_token=AUTH_TOKEN"}}}
+
+Now that you have a conversation, you can add messages and people.
+
+To create a new message in a conversation:
+
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"first message"}' http://localhost:3000/conversations/548ab90b-d141-4603-9e2c-7e1705423861/messages?auth_token=96b97445-9694-4506-aa14-82ec76c50629
+
+This will return the message resource.
+
+    {"uuid":"b2f0e7c9-653e-4da5-90a6-853c5f595762","content":"first message","timestamp":1364776203,"person":{"uuid":"3408705e-4a19-4187-82e0-1551a38cbceb","email":"test@email.com","timestamp":1364526089,"_links":{"self":{"href":"http://localhost:3000/people/6c20b750-56ee-4192-b158-56f3a5c356e9?auth_token=AUTH_TOKEN"}}},"_links":{"self":{"href":"http://localhost:3000/messages/b2f0e7c9-653e-4da5-90a6-853c5f595762?auth_token=AUTH_TOKEN"}}}
 
 Getting conversation messages:
 
