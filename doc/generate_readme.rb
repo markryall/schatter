@@ -25,15 +25,17 @@ You can try this out on heroku (after installing the heroku toolbelt):
 
 My inadequate understanding of REST suggests that guessing urls from known templates is bad.
 
-Instead you hit a resource url and follow hypermedia links to determine what can be done next.
+All requests require a auth_token parameter for authentication.  This is generated for you when you login.
+
+Instead you hit the root url and follow hypermedia links to determine what can be done next.
 
     <%= urls.command %>
 
-This will return a list of resource urls:
+This will return a session and list of available resource urls:
 
     <%= urls.result %>
 
-Retrieve list of conversations by replacing the AUTH_TOKEN with the auth token generated when you sign in with a persona id.
+To retrieve the list of your conversations, request the conversations resource url:
 
     <%= empty_conversations.command %>
 
