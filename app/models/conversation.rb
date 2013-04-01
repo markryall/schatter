@@ -1,8 +1,4 @@
-require 'uuid_generator'
-
 class Conversation < ActiveRecord::Base
-  extend UuidGenerator
-
   attr_accessible :uuid, :name
 
   has_many :memberships

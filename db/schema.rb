@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130330052746) do
+ActiveRecord::Schema.define(:version => 20130401044511) do
 
   create_table "conversations", :force => true do |t|
     t.string   "uuid"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20130330052746) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "auth_token"
+    t.string   "uuid"
   end
 
 end

@@ -1,5 +1,3 @@
-require 'uuid_generator'
-
 class Message < ActiveRecord::Base
   attr_accessible :person, :conversation, :uuid, :content
 

@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
   extend UuidGenerator
   include UuidGenerator
 
-  attr_accessible :email, :name, :auth_token
+  attr_accessible :email, :name, :uuid, :auth_token
 
   has_many :memberships
   has_many :conversations, through: :memberships
@@ -13,7 +13,7 @@ class Person < ActiveRecord::Base
   def self.find_or_create_for_email email
     person = Person.find_by_email email
     return person if person
-    Person.create email: email, auth_token: uuid
+    Person.create email: email, uuid: new_uuid, auth_token: new_uuid
   end
 
   def create_conversation name
