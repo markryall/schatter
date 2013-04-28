@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
     with_conversation params[:conversation_id] do |conversation|
       messages = conversation.messages
       message = Message.find_by_uuid params[:message_id] if params[:message_id]
-      messages = messages.where('message_id > ?', message.id) if message
+      messages = messages.where('id > ?', message.id) if message
       render json: { messages: messages.map {|message| message.to_hal self } }
     end
   end
