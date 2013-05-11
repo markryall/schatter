@@ -65,14 +65,8 @@ describe ApplicationController do
     describe 'with session email' do
       before { session[:email] = :session_email }
 
-      it 'should lookup user from session email' do
-        Person.should_receive(:find_by_email).with(:session_email).and_return :person
-        controller.current_person.should == :person
-      end
-
-      it 'should create a new user if one cannot be found from email' do
-        Person.should_receive(:find_by_email).with(:session_email).and_return nil
-        Person.should_receive(:create_for_email).with(:session_email).and_return :person
+      it 'should find or create user from session email' do
+        Person.should_receive(:find_or_create_for_email).with(:session_email).and_return :person
         controller.current_person.should == :person
       end
     end
