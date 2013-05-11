@@ -13,8 +13,8 @@ class RootController < ApplicationController
       format.json do
         render json: {
           _links: {
-            self: { href: root_url },
-            conversations: { href: conversations_url }
+            self: { href: root_url(session_id: session_id) },
+            conversations: { href: conversations_url(session_id: session_id) }
           }
         }
       end

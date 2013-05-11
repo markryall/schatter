@@ -1,4 +1,8 @@
+require 'uuid_generator'
+
 class ApplicationController < ActionController::Base
+  include UuidGenerator
+
   protect_from_forgery
 
   before_filter :require_login
@@ -56,5 +60,10 @@ class ApplicationController < ActionController::Base
     else
       render json: {error: 'unknown conversation'}, status: 404
     end
+  end
+
+  def session_id
+    return @session_id if @session_id
+    @session_id = params[:session_id] || new_uuid
   end
 end

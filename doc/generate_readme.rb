@@ -165,6 +165,11 @@ class Request
   end
 end
 
+unless ENV['SCHATTER_AUTH_TOKEN']
+  puts "environment variable SCHATTER_AUTH_TOKEN must be defined"
+  exit 1
+end
+
 require 'erb'
 
 curl = Curl.new
