@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  attr_accessible :person, :conversation, :message, :uuid, :content
+  attr_accessible :person, :conversation, :message, :uuid, :content, :session_id
 
   belongs_to :conversation
   belongs_to :person

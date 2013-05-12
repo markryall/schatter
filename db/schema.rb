@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401044511) do
+ActiveRecord::Schema.define(:version => 20130512071655) do
 
   create_table "conversations", :force => true do |t|
     t.string   "uuid"
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(:version => 20130401044511) do
     t.datetime "updated_at", :null => false
     t.string   "auth_token"
     t.string   "uuid"
+  end
+
+  create_table "sessions", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "uuid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
