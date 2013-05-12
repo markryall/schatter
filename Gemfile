@@ -3,10 +3,10 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 gem 'pg'
 gem 'slim'
-gem 'jquery-rails'
 gem 'unicorn'
 gem 'uuidtools'
 gem 'rack-cors', require: 'rack/cors'
+gem 'google-api-client'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
