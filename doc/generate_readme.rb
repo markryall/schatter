@@ -161,7 +161,7 @@ class Request
   end
 
   def link key
-    @parsed_result['_links'][key.to_s]['href']
+    @parsed_result['_links'][key.to_s]['href'].split('?').first
   end
 end
 

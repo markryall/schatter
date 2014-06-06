@@ -28,93 +28,93 @@ All requests require a auth_token parameter for authentication.  This is generat
 
 Instead you hit the root url and follow hypermedia links to determine what can be done next.
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
 This will return a session and list of available resource urls:
 
-    {"_links":{"self":{"href":"http://localhost:3000/?session_id=948b9473-827e-4b9e-9e1f-893fa5d58a00"},"conversations":{"href":"http://localhost:3000/conversations?session_id=948b9473-827e-4b9e-9e1f-893fa5d58a00"}}}
+    {"_links":{"self":{"href":"http://localhost:3000/?session_id=96ea00cd-937b-45ff-8cfb-dee260b1b359"},"conversations":{"href":"http://localhost:3000/conversations?session_id=96ea00cd-937b-45ff-8cfb-dee260b1b359"}}}
 
 To retrieve the list of your conversations, request the conversations resource url:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?session_id=948b9473-827e-4b9e-9e1f-893fa5d58a00?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
 Initially this will return an empty list of conversations (because you haven't created any):
 
-    {"error":"unauthorized"}
+    {"conversations":[]}
 
 You can create a new conversation with a POST to the conversation resource url:
 
-    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"name":"first conversation","auth_token":"cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6"}' http://localhost:3000/conversations?session_id=948b9473-827e-4b9e-9e1f-893fa5d58a00
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"name":"first conversation","auth_token":"b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5"}' http://localhost:3000/conversations
 
 This will return the conversation resource including urls for messages and people (conversation participants):
 
-    {"uuid":"2ed48b5d-e783-436b-ba74-c5d42ba52c21","name":"first conversation","timestamp":1368352619,"_links":{"self":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21"},"messages":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages"},"people":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/people"}}}
+    {"uuid":"fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c","name":"first conversation","timestamp":1402020218,"_links":{"self":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c"},"messages":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages"},"people":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people"}}}
 
 This new conversation will now be included in the response to the conversation request.
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?session_id=948b9473-827e-4b9e-9e1f-893fa5d58a00?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"error":"unauthorized"}
+    {"conversations":[{"uuid":"fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c","name":"first conversation","timestamp":1402020218,"_links":{"self":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c"},"messages":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages"},"people":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people"}}}]}
 
 You can retrieve the conversation using the resource url:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"uuid":"2ed48b5d-e783-436b-ba74-c5d42ba52c21","name":"first conversation","timestamp":1368352619,"_links":{"self":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21"},"messages":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages"},"people":{"href":"http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/people"}}}
+    {"uuid":"fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c","name":"first conversation","timestamp":1402020218,"_links":{"self":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c"},"messages":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages"},"people":{"href":"http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people"}}}
 
 Now that you have a conversation, you can retrieve messages and add messages and people.
 
 Retrieve the list of messages (which will initially be empty)
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
     {"messages":[]}
 
 To create a new message in a conversation:
 
-    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"first message","auth_token":"cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6"}' http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"first message","auth_token":"b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5"}' http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages
 
 This will return the message resource.
 
-    {"uuid":"42aa090a-8b03-4134-8860-d1f661c47267","content":"first message","timestamp":1368352619,"person_id":"52317df8-e970-49f4-9c6c-33a777b773e1","_links":{"self":{"href":"http://localhost:3000/messages/42aa090a-8b03-4134-8860-d1f661c47267"}}}
+    {"uuid":"f3176956-dcef-49b5-a626-a50db30cd17e","content":"first message","timestamp":1402020218,"person_id":"073c84c8-26e0-4a07-9927-605feff33468","_links":{"self":{"href":"http://localhost:3000/messages/f3176956-dcef-49b5-a626-a50db30cd17e"}}}
 
 Now retrieving conversation messages will include the new message:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"messages":[{"uuid":"42aa090a-8b03-4134-8860-d1f661c47267","content":"first message","timestamp":1368352619,"person_id":"52317df8-e970-49f4-9c6c-33a777b773e1","_links":{"self":{"href":"http://localhost:3000/messages/42aa090a-8b03-4134-8860-d1f661c47267"}}},{"uuid":"3ad62f05-ad53-44e0-bd58-3756353d9015","content":"reply message","timestamp":1368352619,"person_id":"52317df8-e970-49f4-9c6c-33a777b773e1","_links":{"self":{"href":"http://localhost:3000/messages/3ad62f05-ad53-44e0-bd58-3756353d9015"}}}]}
+    {"messages":[{"uuid":"f3176956-dcef-49b5-a626-a50db30cd17e","content":"first message","timestamp":1402020218,"person_id":"073c84c8-26e0-4a07-9927-605feff33468","_links":{"self":{"href":"http://localhost:3000/messages/f3176956-dcef-49b5-a626-a50db30cd17e"}}},{"uuid":"115b0649-1264-4acc-b082-c7faa5c22e91","content":"reply message","timestamp":1402020218,"person_id":"073c84c8-26e0-4a07-9927-605feff33468","_links":{"self":{"href":"http://localhost:3000/messages/115b0649-1264-4acc-b082-c7faa5c22e91"}}}]}
 
 You can also reply to a message in a conversation:
 
-    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"reply message","parent_id":"2ed48b5d-e783-436b-ba74-c5d42ba52c21","auth_token":"cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6"}' http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/messages
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"content":"reply message","parent_id":"fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c","auth_token":"b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5"}' http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/messages
 
 This will return the message resource.
 
-    {"uuid":"3ad62f05-ad53-44e0-bd58-3756353d9015","content":"reply message","timestamp":1368352619,"person_id":"52317df8-e970-49f4-9c6c-33a777b773e1","_links":{"self":{"href":"http://localhost:3000/messages/3ad62f05-ad53-44e0-bd58-3756353d9015"}}}
+    {"uuid":"115b0649-1264-4acc-b082-c7faa5c22e91","content":"reply message","timestamp":1402020218,"person_id":"073c84c8-26e0-4a07-9927-605feff33468","_links":{"self":{"href":"http://localhost:3000/messages/115b0649-1264-4acc-b082-c7faa5c22e91"}}}
 
 Messages can be deleted (only by the initial creator of the message)
 
-    curl -s -H 'Accept: application/json' -X DELETE http://localhost:3000/messages/3ad62f05-ad53-44e0-bd58-3756353d9015?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X DELETE http://localhost:3000/messages/115b0649-1264-4acc-b082-c7faa5c22e91?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"uuid":"3ad62f05-ad53-44e0-bd58-3756353d9015","content":"reply message","timestamp":1368352619,"person_id":"52317df8-e970-49f4-9c6c-33a777b773e1","_links":{"self":{"href":"http://localhost:3000/messages/3ad62f05-ad53-44e0-bd58-3756353d9015"}}}
+    {"uuid":"115b0649-1264-4acc-b082-c7faa5c22e91","content":"reply message","timestamp":1402020218,"person_id":"073c84c8-26e0-4a07-9927-605feff33468","_links":{"self":{"href":"http://localhost:3000/messages/115b0649-1264-4acc-b082-c7faa5c22e91"}}}
 
 Initially the members of a conversation will only include the person who created it:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/people?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"people":[{"uuid":"52317df8-e970-49f4-9c6c-33a777b773e1","email":"mark.ryall@gmail.com","timestamp":1368256192,"_links":{"self":{"href":"http://localhost:3000/people/52317df8-e970-49f4-9c6c-33a777b773e1"}}}]}
+    {"people":[{"uuid":"073c84c8-26e0-4a07-9927-605feff33468","email":"mark.ryall@gmail.com","timestamp":1402019035,"_links":{"self":{"href":"http://localhost:3000/people/073c84c8-26e0-4a07-9927-605feff33468"}}}]}
 
 New members can be created by posting to the conversation people url:
 
-    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"email":"test2@email.com","auth_token":"cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6"}' http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/people
+    curl -s -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"email":"test2@email.com","auth_token":"b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5"}' http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people
 
-    {"uuid":"921a2fd8-40f5-409c-8a05-82ddc227239d","email":"test2@email.com","timestamp":1368256222,"_links":{"self":{"href":"http://localhost:3000/people/921a2fd8-40f5-409c-8a05-82ddc227239d"}}}
+    {"uuid":"084bba89-c574-4a11-8df7-3f124489caac","email":"test2@email.com","timestamp":1402019059,"_links":{"self":{"href":"http://localhost:3000/people/084bba89-c574-4a11-8df7-3f124489caac"}}}
 
 This new person will now be included in the conversation list:
 
-    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/2ed48b5d-e783-436b-ba74-c5d42ba52c21/people?auth_token=cb7f39ff-a9d9-4ac8-8962-1bb9dac0eef6
+    curl -s -H 'Accept: application/json' -X GET http://localhost:3000/conversations/fdb451a4-a3f8-4de5-9a43-03c9c7d1eb2c/people?auth_token=b0c8c25a-f51a-4a6a-9c0b-4119f08d60d5
 
-    {"people":[{"uuid":"52317df8-e970-49f4-9c6c-33a777b773e1","email":"mark.ryall@gmail.com","timestamp":1368256192,"_links":{"self":{"href":"http://localhost:3000/people/52317df8-e970-49f4-9c6c-33a777b773e1"}}},{"uuid":"921a2fd8-40f5-409c-8a05-82ddc227239d","email":"test2@email.com","timestamp":1368256222,"_links":{"self":{"href":"http://localhost:3000/people/921a2fd8-40f5-409c-8a05-82ddc227239d"}}}]}
+    {"people":[{"uuid":"073c84c8-26e0-4a07-9927-605feff33468","email":"mark.ryall@gmail.com","timestamp":1402019035,"_links":{"self":{"href":"http://localhost:3000/people/073c84c8-26e0-4a07-9927-605feff33468"}}},{"uuid":"084bba89-c574-4a11-8df7-3f124489caac","email":"test2@email.com","timestamp":1402019059,"_links":{"self":{"href":"http://localhost:3000/people/084bba89-c574-4a11-8df7-3f124489caac"}}}]}
 
 ## Future plans
 
